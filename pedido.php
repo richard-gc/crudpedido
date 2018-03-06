@@ -14,7 +14,7 @@
     <title>Page Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="css/bootstrap.min.css">
-    <script src="mainjs/bootstrap.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
 </head>
 <body>
     <form action="pedidointerno.php" class="form-grup py-2">
@@ -87,6 +87,7 @@
             <input type="submit" name="buscar"  id="btn_buscar" class="btn btn-info" value="buscar ">
         </div>
         <div id="result"></div>
+        
     </form>
     </div>
     <?php
@@ -114,7 +115,6 @@
                     // alert('Hola mundo');
                     // muestro la información en una alerta
                     // alert(xhr.responseText);
-                    console.log(xhr.responseText);
                     const result = JSON.parse(xhr.responseText);
                     
                     let data = ``;
@@ -139,6 +139,7 @@
                         </tr>
                         `
                     }
+                    let urlData = JSON.stringify(result);
                     let table = `
                     <div style="height: 400px; width: 1200px; margin-left: 50px; margin-top: 30px; overflow: scroll;">
                     <table class="table table-hover">
@@ -164,11 +165,10 @@
                              ${data}                          
                         </tbody>
                         </table>
-                        
                         </div>
-                        <form action="exportar.php" method="post" class="row justify-content-center">
-                        <input type="submit" name="descargar" class="btn btn-info" value="descargar">
-                        </form>
+                        <a href="exportar.php" class="btn btn-success" target="_blank"> exportar </a>
+                        
+                        
                     `
                     document.getElementById('result').innerHTML = table;
                 }else{
@@ -199,7 +199,8 @@
             //previene el evento submit que me recarga la página 
             e.preventDefault();
         })
-    
+
+       
    </script>
 
 </body>
