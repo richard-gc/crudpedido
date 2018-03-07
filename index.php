@@ -1,43 +1,35 @@
-<?php 
+<?php
+//recupera la sesiones mientras navegamos 
 session_start();
-if( isset($_SESSION['dataUser'])){
-     header("location:pedidointerno.php");
+//obtenemos la configuración donde encontramos valores ya definidos
+//usamos el require, lo que me permite que si no se encuentra el archivo el programa no continua (lo que lo diferencia del include que sí continua)
+require('config/core.php');
+
+/*
+El condicional me permite controlar las rutas con sus respectivos controladores
+* a traves del paramaetro view que viaja en la url (?view='') verificamos a que ruta se dirige el usuario
+Ejemplo 
+    localhost/crudpedido?view='administrador'  - se dirigre a la vista administrador
+* file_exists verifica que exista el controlador, sino lo manda a un error 404 (erroController)
+* si existe lo dirige a su controlador para las verificaciones necesarias. 
+* en caso no exista el parametro 'view' este lo dirige por defecto al index
+Por ejemplo: 
+    localhost/crudpedido  -> se va al indexController
+*/
+if(isset($_GET['view'])){
+    /* strtolower para que cualquier valor ingresado por el parametro view sea convertido a minusculas */ 
+    if(file_exists('controllers/'.strtolower($_GET['view']).'Controller.php')){
+        include('controllers/'.strtolower($_GET['view']).'Controller.php');
+    }else{
+        include('controllers/errorController.php');
+    }
+}else{
+    include('controllers/indexController.php');
 }
+
+/*
+Nota: debemos recordar que al hacer un include o require ( el código se incluye dentro del archivo)
+      Por lo tanto a cualquier archivo tenemos que tomar referencia esta ruta
+*/ 
+
 ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>Page Title</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
-    
-</head>
-<body>
-        <div class="container">
-            <div class="col-sm-10" style="width: 600px; margin-left: 250px; margin-top: 50px;">
-                <div class="jumbotron">
-                    <div class="form-group">
-                        <h1 class="text-center">Iniciar Sesión</h1>
-                    </div>
-                    <form action="" id="formlg" class= "form-horizontal" style="margin-left: 50px;">
-                        <div class="form-group input-group">
-                            <span class="input-group-addon">
-                                <span class="glyphicon glyphicon-user"></span>
-                            </span>
-                            <input type="text" class="form-control" name="user" id="user" placeholder="Usuario">
-                        </div>
-                        <div class="form-group input-group">
-                            <input type="password"  class="form-control" name="pass" id="pass" placeholder="Contraseña">
-                        </div>
-                        <div class="form-group text-center">
-                            <input type="submit"  class="btn btn-success" name="sesion" value="Entrar">
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        <script src="sesion/js.js"></script>
-</body>
-</html>
