@@ -25,6 +25,18 @@
       case 'updateArea':
         require('functions/updateArea.php');
         break;
+      // modo getOrders, requerimos la función getOrders
+      case 'getOrders':
+        require('functions/getOrders.php');
+        break;
+      // modo addOrder, requerimos la función addOrder
+      case 'addOrder':
+        require('functions/addOrder.php');
+        break;
+      // modo addOrder, requerimos la función addOrder
+      case 'updateOrder':
+        require('functions/updateOrder.php');
+        break;
       // por defecto nos redirige al index.        
       default:
         header('location:index.php');
