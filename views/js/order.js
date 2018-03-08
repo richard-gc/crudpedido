@@ -218,6 +218,62 @@ new Vue({
     execSubmit(){
       if(this.mode==0){this.addOrder()}
       else{this.updateOrder()}
+    },
+    convertToCSV(objArray){
+      let array = typeof objArray != 'object' ? JSON.parse(objArray) : objArray;
+      let str = '';
+      for(let i=0; i<array.length; i++){
+        let line = '';
+        for(let index in array[i]){
+          if(line!='') line +=','
+          line += array[i][index];
+        }
+        str += line + '\r\n';
+      }
+      return str;
+    },
+    exportCSVFile(headers,items,fileTitle){
+      if(headers){
+        items.unshift(headers);
+      }
+      //Convertir Object a JSON
+      let jsonObject = JSON.stringify(items);
+      let csv = this.convertToCSV(jsonObject);
+      let exportedFilename = fileTitle+'.csv' || 'export.csv';
+      let blob = new Blob([csv],{type:'text/csv;charset=utf-8;'});
+      if(navigator.msSaveBlob){
+        navigator.msSaveBlob(blob,exportedFilename);
+      }else{
+        let link = document.createElement("a");
+        if(link.download != undefined){
+          let url = URL.createObjectURL(blob);
+          link.setAttribute('href',url);
+          link.setAttribute('download',exportedFilename);
+          link.style.visibility='hidden';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      }
+    },
+    exportData(){
+      let headers={
+        npedido:"N Pedido",
+        area_id:"ID Area",
+        descripcion: "Descripcion",
+        cantidad: "Cantidad",
+        unidad: "Unidades",
+        tipo: "Tipo",
+        cod_ppto: "COD_PPTO",
+        cod_pomdihma: "COD_POMDIHMA",
+        fecha: "Fecha",
+        fecha_atendido: "Fecha Atendido",
+        fecha_pc: "Fecha PC",
+        seguimiento: "Seguimiento",
+        costo_estimado: "Costo Estimado",
+        costo_real: "Costo Real"
+      }
+      this.exportCSVFile(headers,this.orders,'pedidos')
     }
   }
 })

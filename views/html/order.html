@@ -62,7 +62,7 @@
         </tbody>
       </table>
     </div>
-    <a href="exportar.php" class="btn btn-success" target="_blank">Descargar Excel</a>
+    <a href="#" @click="exportData()" class="btn btn-success" target="_blank">Descargar Excel</a>
 
     <!-- ventana modal para agregar y actualizar pedidos  -->
     <!-- la ventana solo se mostrará cuando showModal sea verdadero  -->
@@ -165,7 +165,7 @@
             <input type="submit" class="btn btn-success" value="registrar" v-if="mode==0" >
             <input type="submit" class="btn btn-success" value="editar" v-else>
             <!-- al dar click en Cerrar el showModal pasa a falso y limpiamos los datos que se encuentren  -->
-            <a href="#" class="btn btn-danger" @click="newOrder={};showModal=false">Cerrar</a>
+            <a href="#" target="_blank" class="btn btn-danger" @click="newOrder={};showModal=false">Cerrar</a>
         </div>
       </form>
     </div>
