@@ -4,12 +4,25 @@ new Vue({
     areas:[],  
     orders:[],
     newOrder:{},
+    valor:'',
+    filterMode:'all',
     mode: 0, // modo 0: añadir , 1 :actualizar
     showModal: false //mostrar modal para actualizar o añadir pedido
   },
   mounted(){
     this.getAreas();
     this.getOrders();
+  },
+  computed:{
+    filterOrders(){
+      switch(this.filterMode){
+        case 'all'         : return this.orders;break;
+        case 'area'        : return this.orders.filter(order=>order.area_id==this.valor); break;
+        case 'tipo'        : return this.orders.filter(order=>order.tipo==this.valor);break;
+        case 'seguimiento' : return this.orders.filter(order=>order.seguimiento==this.valor);break;
+        default            : return this.orders; 
+      }
+    }
   },
   methods:{
     // la función get Areas realiza una petición get para obtener las áreas.
@@ -273,7 +286,7 @@ new Vue({
         costo_estimado: "Costo Estimado",
         costo_real: "Costo Real"
       }
-      this.exportCSVFile(headers,this.orders,'pedidos')
+      this.exportCSVFile(headers,this.filterOrders,'pedidos')
     }
   }
 })
